@@ -26,8 +26,8 @@ install_keyring()
 	# installing the keyring if it is not installed
 	if [ ! -f ${_keyring_location}/${_keyring_name_wExt} ]; then
 		logme_red "Installing the keyring, as it is not present"
-		apt-get install -y ${_keyring_name}
-		apt-key add ${_keyring_location}/${_keyring_name_wExt}
+		sudo apt-get install -y ${_keyring_name}
+		sudo apt-key add ${_keyring_location}/${_keyring_name_wExt}
 	else
 		logme_green "Keyring is already present"
 	fi
@@ -38,7 +38,7 @@ install_dependencies()
 	# checking for the debootstrap binary, if not install it
 	if [ "${_debootstrap}" = "${_isDebootstrapPresent}" ]; then
 		logme_red "Installing the ${_debootstrap}, as it is not present"
-		apt-get -y install debootstrap 
+		sudo apt-get -y install debootstrap
 	else
 		logme_green "${_debootstrap} is already present"
 	fi
@@ -46,8 +46,8 @@ install_dependencies()
 	# checking for the qemu-debootstrap binary, if not install it
 	if [ "${_qemu_debootstrap}" = "${_isQemuDebootstrapPresent}" ]; then
 		logme_red "Installing the ${_qemu_debootstrap}, as it is not present"
-		apt-get -y install qemu-utils qemu 
-		apt-get -y build-dep qemu
+		sudo apt-get -y install qemu-utils qemu
+		sudo apt-get -y build-dep qemu
 	else
 		logme_green "${_qemu_debootstrap} is already present"
 	fi
@@ -55,7 +55,7 @@ install_dependencies()
 	# checking for the qemu-debootstrap for ARM64 binary, if not install it
 	if [ "${_qemu_aarch64}" = "${_isQemuAarm64Present}" ]; then
 		logme_red "Installing the ${_qemu_aarch64}, as it is not present"
-		apt-get -y install qemu-user-static
+		sudo apt-get -y install qemu-user-static
 	else
 		logme_green "${_qemu_aarch64} is already present"
 	fi
@@ -63,26 +63,10 @@ install_dependencies()
 	# checking for the device tree compiler, if not present, it will be installed
 	if [ -z "${_isDTCPresent}" ]; then
 		logme_red "Installing the device-tree-compiler, as it is not present"
-		 apt-get -y install device-tree-compiler
+		sudo apt-get -y install device-tree-compiler
 	else
 		logme_green "device-tree-compiler is already present"
 	fi
-}
-
-# This will create the basic list of requried directory before the beginning
-check_and_create_dirs()
-{
-	# list of directories needs to be created if not present. 
-	_dir_list="${_build_dir} ${_tmp_dir} ${_tmp_disk} ${_target_dir} ${_dl_dir}"
-	for i in ${_dir_list}; 
-	do
-		if [ ! -d $i ]; then
-			mkdir -p $i
-			logme_green "Creating "$i" directory" 
-		else
-			logme_cyan "$i is already present"
-		fi
-	done
 }
 
 # Getting the toolchain from the *-*-*-*-*-*-*-*-* Internet.
@@ -125,9 +109,9 @@ get_skales()
 get_repo()
 {
 	if [[ -z `which repo` && ! -d ${_dl_dir}/bin ]]; then
-		mkdir ${_dl_dir}/bin
-		curl https://storage.googleapis.com/git-repo-downloads/repo > ${_dl_dir}/bin/repo
-		chmod a+x ${_dl_dir}/bin/repo
+		mkdir  ${_tools_dir}/bin
+		curl https://storage.googleapis.com/git-repo-downloads/repo >  ${_tools_dir}/bin/repo
+		chmod a+x  ${_tools_dir}/bin/repo
 	else
 		logme_green "repo is present in the system, hence not updating it"
 	fi

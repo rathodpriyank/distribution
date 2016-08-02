@@ -27,6 +27,12 @@ patch_me()
 # Used to build the kernel with the default config file
 kn_build()
 {
+
+	if [ ! -d ${_kn_dir} ]; then
+		logme_red "Kernel is not present, hence not doing anthing"
+		return
+	fi
+
 	# Clean/Remove the directory if clean option is enabled
 	cd ${_kn_dir}
 	if [ xy = "x${_clean}" ]; then

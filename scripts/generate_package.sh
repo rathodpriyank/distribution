@@ -9,20 +9,25 @@
 #		Author  : Priyank Rathod <rathodpriyank@gmail.com>
 
 # to create the package for final use
-cp_build()
+
+cp_kernel()
 {
 	# Capture the current date/time to make sure
 	# we are consistent when creating images.
-	logme_green "Creating the initramfs"
-	initramfs_build
-	logme_green "Creating the device tree package"
-	${_skl_dir}/dtbTool -o ${_dtb_img} -s 2048  ${_dtb_dir}
-	logme_green "Creating the final package for the device"
-	${_skl_dir}/mkbootimg --base 0 --kernel ${_kn_img} --ramdisk ${_initramfs_img} \
-	--output ${_build_dir}/boot-${DATE}.img \
-	--dt ${_dtb_img} --pagesize "2048" --base "0x80080000" \
-	--cmdline "root=/dev/sda9 rootfstype=ext4 rw console=ttyHSL0,115200n8"
-	logme_yellow "Yeah, I finished everything what I said ... "
+	if [ -d ${_dtb_dir} ]; then
+		logme_green "Creating the device tree package"
+		${_skl_dir}/dtbTool -o ${_dtb_img} -s 2048  ${_dtb_dir}
+	fi
+
+	# creation of boot image
+	if [[ -f ${_kn_img} && -f ${_initramfs_img} && \
+		  -f ${_dtb_img} ]]; then
+		logme_green "Creating the final package for the device"
+		${_skl_dir}/mkbootimg --base 0 --kernel ${_kn_img} --ramdisk ${_initramfs_img} \
+			--output ${_build_dir}/boot-${DATE}.img \
+			--dt ${_dtb_img} --pagesize "2048" --base "0x80080000" \
+			--cmdline "root=/dev/sda9 rootfstype=ext4 rw console=ttyHSL0,115200n8"
+	fi
 }
 
 create_flashall()
