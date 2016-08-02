@@ -25,10 +25,12 @@ CYAN='\e[36;1m'
 WHITE='\e[37;1m'
 ENDING='\e[0m'
 
-_log_file=`pwd`/log.txt
+_log_dir=${_home}/logs
+_log_file=${_log_dir}/log-${DATE}.txt
 
 # Just making sure the file is there always before beginning. 
-if [ -f ${_log_file} ]; then
+if [ ! -d ${_log_dir} ]; then
+	mkdir ${_log_dir}
 	touch ${_log_file}
 fi
 

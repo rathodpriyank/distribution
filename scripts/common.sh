@@ -27,27 +27,25 @@ export _create_package=
 export _install_dependencies=
 
 # list of folders used by this script so its better they be there
-export _build_dir=${_home}/../binaries
+export _build_dir=${_home}/binaries
 export _tmp_dir=/tmp/system-img
-export _tmp_disk=/tmp/disk
-export _target_dir=${_home}/../${_bversion}-arm64
+export _target_dir=${_home}/${_bversion}-arm64
 export _dl_dir=${_home}/dl
-# this directories will be present already or created dynanmically
-export _src_dir=${_home}/../source_packages
-export _skl_dir=${_dl_dir}/skales
-export _scipt_dir=${_src_dir}/scripts
-export _patch_dir=${_src_dir}/patches
+export _tools_dir=${_home}/tools
+export _skl_dir=${_tools_dir}/skales
 export _kn_dir=${_home}/../kernel
-export _initramfs_dir=${_src_dir}/initramfs
 export _dtb_dir=${_kn_dir}/arch/arm64/boot/dts/qcom
-export _linaro_toolchain_dir=${_dl_dir}/linaro-toolchain
+export _initramfs_dir=${_home}/initramfs
+export _linaro_toolchain_dir=${_home}/linaro-toolchain
+
 
 # list of files & binaries used by this script
-export _chroot_script=chroot_build.sh
+export _chroot_script=${_home}/scripts/chroot_build.sh
 export _def_bash=/bin/bash
 export _flash_script=${_build_dir}/flashall
 export _kn_img=${_kn_dir}/arch/arm64/boot/Image
-export _initramfs_img=${_build_dir}/initramfs.igz
+export _initramfs_tmp=${_build_dir}/initramfs.cpio
+export _initramfs_img=${_build_dir}/initramfs.img
 export _dtb_img=${_dtb_dir}/dt.img
 export _linaro_manifest=${_linaro_toolchain_name}/gcc-linaro-5.3-2016.02-manifest.txt
 
@@ -58,6 +56,12 @@ export _linaro_toolchain_url=https://releases.linaro.org/components/toolchain/bi
 export _linaro_toolchain_name=gcc-linaro-5.3-2016.02-x86_64_aarch64-linux-gnu
 export _linaro_toolchain_ver=${_linaro_toolchain_name}.tar.xz
 export _skales_tool=git://codeaurora.org/quic/kernel/skales
+
+# busybox
+export _busybox_ver=1.25.0
+export _busybox=busybox-${_busybox_ver}
+export _busybox_url=https://busybox.net/downloads/${_busybox}.tar.bz2
+export _busybox_dir=${_tools_dir}/${_busybox}
 
 # target file system options 
 export _fs_size=512	# This is in MB

@@ -24,21 +24,21 @@ first_stage_debootstrap()
 	
 	# Starting the process to build rootfs from here
 	logme_green "Starting to sync repo from ${_repo_location}"
-	debootstrap --keyring ${_keyring_location}/${_keyring_name_wExt} \
+	sudo debootstrap --keyring ${_keyring_location}/${_keyring_name_wExt} \
 		--arch=arm64 --exclude=debfoster --foreign --include=${_packages} \
 		${_bversion} ${_target_dir} ${_repo_location}
 	
 	# copying the qemu binary to make sure chroot works 	
 	logme_green "Copying ${_qemu_aarch64} required to chroot"
-	cp ${_qemu_aarch64} ${_target_dir}/usr/bin/
+	sudo cp ${_qemu_aarch64} ${_target_dir}/usr/bin/
 
 	# copying the scripts to start second stage debootstrap and more
-	logme_green "Copying scripts from ${_scipt_dir} to target"
-	cp ${_scipt_dir}/* ${_target_dir}/etc/init.d/
+	logme_green "Copying scripts from ${_chroot_script} to target"
+	sudo cp ${_chroot_script} ${_target_dir}/etc/init.d/
 
 	# we will transfer the control from here for further processing	
 	logme_cyan "Changing root to ${_target_dir}"
-	chroot ${_target_dir} ${_def_bash} -c "/etc/init.d/chroot_build.sh"
+	sudo chroot ${_target_dir} ${_def_bash} -c "/etc/init.d/chroot_build.sh"
 }
 
 create_empty_fs()
@@ -46,8 +46,6 @@ create_empty_fs()
 	dd if=/dev/zero of=${_fs_name} bs=1M count=${_fs_size}
 	logme_green "Converting to ext4 file package"
 	echo y | mkfs.ext4 -q ${_fs_name}
-	#expect "${_fs_name} is not a block special device.\nProceed anyway? (y,n)"
-	#send -- "y\r"
 }
 
 mount_fs()
