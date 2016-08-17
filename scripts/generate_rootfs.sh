@@ -11,9 +11,9 @@
 create_package_list()
 {
 	# list of packages for the target device.
-	_packages1="openssh-server,stress-ng,ntp,udhcpc,vim,sudo"
-	_packages2="bluetooth,bluez,ethtool,pciutils"
-	_packages="${_packages1},${_packages2}"
+	_packages="openssh-server,stress-ng,ntp,udhcpc,vim,sudo"
+	_packages="${_packages},bluetooth,bluez,ethtool,pciutils"
+	_packages="${_packages},lightdm,xfce4"
 }
 
 first_stage_debootstrap()
@@ -43,6 +43,8 @@ first_stage_debootstrap()
 
 create_empty_fs()
 {
+    _fs_size_byte=`sudo du -d0 ${_target_dir} | cut -f1`
+    _fs_size=`expr ${_fs_size_byte} / 1024 + 100`
 	dd if=/dev/zero of=${_fs_name} bs=1M count=${_fs_size}
 	logme_green "Converting to ext4 file package"
 	echo y | mkfs.ext4 -q ${_fs_name}

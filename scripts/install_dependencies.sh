@@ -36,7 +36,7 @@ install_keyring()
 install_dependencies()
 {
 	# checking for the debootstrap binary, if not install it
-	if [ "${_debootstrap}" = "${_isDebootstrapPresent}" ]; then
+	if [ "${_debootstrap}" != "${_isDebootstrapPresent}" ]; then
 		logme_red "Installing the ${_debootstrap}, as it is not present"
 		sudo apt-get -y install debootstrap
 	else
@@ -44,7 +44,7 @@ install_dependencies()
 	fi
 
 	# checking for the qemu-debootstrap binary, if not install it
-	if [ "${_qemu_debootstrap}" = "${_isQemuDebootstrapPresent}" ]; then
+	if [ "${_qemu_debootstrap}" != "${_isQemuDebootstrapPresent}" ]; then
 		logme_red "Installing the ${_qemu_debootstrap}, as it is not present"
 		sudo apt-get -y install qemu-utils qemu
 		sudo apt-get -y build-dep qemu
@@ -53,7 +53,7 @@ install_dependencies()
 	fi
 	
 	# checking for the qemu-debootstrap for ARM64 binary, if not install it
-	if [ "${_qemu_aarch64}" = "${_isQemuAarm64Present}" ]; then
+	if [ "${_qemu_aarch64}" != "${_isQemuAarm64Present}" ]; then
 		logme_red "Installing the ${_qemu_aarch64}, as it is not present"
 		sudo apt-get -y install qemu-user-static
 	else
