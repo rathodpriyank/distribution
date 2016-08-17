@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 #		This script does everything you imagine to build debian/ubuntu builds.
 #		
 #
